@@ -14,49 +14,11 @@
       <div class="col-lg-6 d-none d-lg-block">
         <nav>
           <ul class="navigation d-flex justify-content-around">
-            <li class="navigation-item">
+            <li class="navigation-item" v-for="link in links" :key="link.id" >
               <NuxtLink
-                to="/products/products"
+                :to='link.route'
                 class="navigation-link"
-                data-field="gender"
-                >Womens</NuxtLink
-              >
-            </li>
-            <li class="navigation-item">
-              <NuxtLink
-                to="/products/products"
-                class="navigation-link"
-                data-field="gender"
-                >Mens</NuxtLink
-              >
-            </li>
-            <li class="navigation-item">
-              <NuxtLink
-                to="/products/products"
-                class="navigation-link"
-                data-field="category"
-                >Clothing</NuxtLink
-              >
-            </li>
-            <li class="navigation-item">
-              <NuxtLink
-                to="/products/products"
-                class="navigation-link"
-                data-field="category"
-                >Accessories</NuxtLink
-              >
-            </li>
-            <li class="navigation-item">
-              <NuxtLink
-                to="/products/products"
-                class="navigation-link"
-                data-field="category"
-                >Shoes</NuxtLink
-              >
-            </li>
-            <li class="navigation-item">
-              <NuxtLink to="/products/products" class="navigation-link"
-                >All</NuxtLink
+                >{{ link.text }}</NuxtLink
               >
             </li>
           </ul>
@@ -81,7 +43,7 @@
         </div>
       </div>
       <div class="col-lg-2 col-6 d-flex justify-content-end">
-        <button class="button button-cart">
+        <button class="button button-cart" >
           <img class="button-icon" src="/images/cart.svg" alt="icon: cart" />
           <span class="button-text">Cart</span>
           <span class="button-text cart-count"></span>
@@ -91,3 +53,57 @@
     <!-- /.row -->
   </header>
 </template>
+<script setup>
+const links = ref([
+  {
+    id: 0,
+    route: {
+      path: "/products",
+      query: { field: "gender", name: "Womens" },
+    },
+    text: "Womens",
+  },
+  {
+    id: 1,
+    route: {
+      path: "/products",
+      query: { field: "gender", name: "Mens" },
+    },
+    text: "Mens",
+  },
+  {
+    id: 2,
+    route: {
+      path: "/products",
+      query: { field: "category", name: "Clothing" },
+    },
+    text: "Clothing",
+  },
+  {
+    id: 3,
+    route: {
+      path: "/products",
+      query: { field: "category", name: "Accessories" },
+    },
+    text: "Accessories",
+  },
+  {
+    id: 4,
+    route: {
+      path: "/products",
+      query: { field: "category", name: "Shoes" },
+    },
+    text: "Shoes",
+  },
+  {
+    id: 5,
+    route: {
+      path: "/products",
+    },
+    text: "All",
+  },
+]);
+
+
+</script>
+
