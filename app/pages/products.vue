@@ -10,7 +10,7 @@
       <div class="row long-goods-list">
       <div class="col-lg-3 col-sm-6" v-for="card in products" :key="card.id">
         <div class="goods-card">
-          <span class="label" v-if="card.label">{{ card.label.toUpperCase() }}</span>
+          <span class="label" v-if="card.label">{{ titleFormat(card.label) }}</span>
           <!-- /.label --><img
             :src="card.img"
             :alt="card.name"
@@ -21,7 +21,7 @@
           <!-- /.goods-title -->
           <p class="goods-description">{{ card.description }}</p>
           <!-- /.goods-description -->
-          <button class="button goods-card-btn add-to-cart" data-id="011">
+          <button class="button goods-card-btn add-to-cart" @click="addToCard(card)">
             <span class="button-price">{{ card.price }}$</span>
           </button>
           <!-- /.goods-price -->
@@ -32,7 +32,11 @@
     </div>
   </section>
 </template>
-  <script setup>
+  <script setup lang="ts">
+  import type { CartItem } from "~/modules/cart.item.module";
+import type { Product } from "~/modules/products.module";
+
+      const cartItems = useCart();
     definePageMeta({
       layout: "custom",
     });
@@ -44,6 +48,22 @@
     const  {data: products} = await useAsyncData('filtered-products', ()=>{
       return $fetch(`/api/filtered-products?field=${field.value}&name=${name.value}`)
     }, {watch: [field, name ]})
+
+const addToCard = (product: Product) => {
+  const findItem = cartItems.value.find((c) => c.id === product.id);
+  if (findItem) {
+    findItem.count++;
+  } else {
+    const newCartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      count: 1,
+    };
+    cartItems.value.push(newCartItem);
+  }
+
+};
   </script>
 
 

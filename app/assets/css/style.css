@@ -519,6 +519,9 @@ button {
     border-bottom-left-radius: 0;
 }
 
+.cart-empty{
+  text-align: center;
+}
 
 @media (max-width: 1200px) {
     .slide-1 {

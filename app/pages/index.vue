@@ -1,7 +1,4 @@
-
 <template>
-
-
   <section class="slider swiper-container">
     <div class="swiper-wrapper">
       <section class="slide slide-1 swiper-slide">
@@ -94,7 +91,7 @@
   <!-- /.slider -->
   <section class="special-offers container pt-5 pb-4">
     <div class="row mb-4">
-      <div class="col-xl-6" >
+      <div class="col-xl-6">
         <div class="card card-1 mb-4">
           <h3 class="card-title">Fashion Month Ready in Capital Shop</h3>
           <p class="card-text">
@@ -167,7 +164,11 @@
       </div>
       <!-- /.col-9 -->
       <div class="col-3 d-flex justify-content-end">
-                              <NuxtLink :to="{  path: '/products', query: { field: 'label', name: 'new' }}" class="more" >View All</NuxtLink>
+        <NuxtLink
+          :to="{ path: '/products', query: { field: 'label', name: 'new' } }"
+          class="more"
+          >View All</NuxtLink
+        >
       </div>
       <!-- /.col-3 -->
     </div>
@@ -175,7 +176,7 @@
     <div class="short-goods row">
       <div class="col-lg-3 col-sm-6" v-for="card in products" :key="card.id">
         <div class="goods-card">
-          <span class="label">{{ card.label.toUpperCase() }}</span>
+          <span class="label">{{ titleFormat(card.label) }}</span>
           <!-- /.label --><img
             :src="card.img"
             :alt="card.name"
@@ -185,7 +186,10 @@
           <!-- /.goods-title -->
           <p class="goods-description">{{ card.description }}</p>
           <!-- /.goods-description -->
-          <button class="button goods-card-btn add-to-cart" data-id="011">
+          <button
+            class="button goods-card-btn add-to-cart"
+            @click="addToCard(card)"
+          >
             <span class="button-price">{{ card.price }}$</span>
           </button>
           <!-- /.goods-price -->
@@ -195,10 +199,27 @@
     </div>
     <!-- /.row -->
   </section>
-
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { CartItem } from "~/modules/cart.item.module";
+import type { Product } from "~/modules/products.module";
+const { data: products } = await useFetch("/api/new-products");
 
-const { data: products, } = await useFetch('/api/new-products')
+const cartItems = useCart();
+const addToCard = (product: Product) => {
+  const findItem = cartItems.value.find((c) => c.id === product.id);
+  if (findItem) {
+    findItem.count++;
+  } else {
+    const newCartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      count: 1,
+    };
+    cartItems.value.push(newCartItem);
+  }
+
+};
 </script>
